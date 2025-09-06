@@ -19,8 +19,8 @@ contract EscrowJudge {
         address provider;
         address token; // address(0) for ETH
         uint256 amount;
-        string evidenceClient; // IPFS CID(s) as a single string
-        string evidenceProvider;
+        string[] evidencesClient; // IPFS CID(s) as a single string
+        string[] evidencesProvider;
         string justification; // plaintext justification for proposed outcome by AI judge
         uint64 deadline; // unix time delivery deadline
         uint64 proposedAt; // block timestamp when proposed
@@ -66,18 +66,14 @@ contract EscrowJudge {
             provider: provider,
             token: address(0),
             amount: msg.value,
-            evidenceClient: "",
-            evidenceProvider: "",
+            evidencesClient: initialEvidences,
+            evidencesProvider: new string[](0),
             justification: "",
             deadline: deadline,
             proposedAt: 0,
             status: Status.Open,
             outcome: Outcome.None
         });
-        // run submitEvidence for any initial evidences
-        for (uint256 i = 0; i < initialEvidences.length; i++) {
-            submitEvidence(id, initialEvidences[i]);
-        }
         emit CaseOpened(id, msg.sender, provider, msg.value);
     }
 
@@ -91,8 +87,11 @@ contract EscrowJudge {
             msg.sender == c.client || msg.sender == c.provider,
             "not party"
         );
-        if (msg.sender == c.client) c.evidenceClient = cid;
-        else c.evidenceProvider = cid;
+        if (msg.sender == c.client) {
+            c.evidencesClient.push(cid);
+        } else {
+            c.evidencesProvider.push(cid);
+        }
         emit Evidence(id, msg.sender, cid);
     }
 
