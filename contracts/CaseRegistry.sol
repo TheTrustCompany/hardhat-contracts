@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-contract EscrowJudge {
+contract CaseRegistry {
     enum Status {
         Open,
         Proposed,
@@ -28,7 +28,7 @@ contract EscrowJudge {
         Outcome outcome;
     }
 
-    address public aiJudge; // trusted proposer
+    address public aiJudge; // trusted propose
     uint64 public challengeSecs;
     uint256 public nextId;
     mapping(uint256 => CaseData) public cases;
@@ -155,5 +155,20 @@ contract EscrowJudge {
                 ids[idx++] = i;
             }
         }
+    }
+
+    function getCaseEvidences(
+        uint256 id
+    )
+        external
+        view
+        returns (
+            string[] memory clientEvidences,
+            string[] memory providerEvidences
+        )
+    {
+        CaseData storage c = cases[id];
+        clientEvidences = c.evidencesClient;
+        providerEvidences = c.evidencesProvider;
     }
 }
