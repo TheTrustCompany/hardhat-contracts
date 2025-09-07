@@ -15,7 +15,12 @@ const PROVIDER_PRIVATE_KEY = vars.get("PROVIDER_PRIVATE_KEY");
 const accounts = [DEPLOYER_PRIVATE_KEY, CLIENT_PRIVATE_KEY, PROVIDER_PRIVATE_KEY];
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.28",
+  solidity: {
+    version: "0.8.28",
+    settings: {
+      viaIR: true,
+    },
+  },
   namedAccounts: {
     deployer: 0,
     client: 1,
@@ -24,6 +29,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       sepolia: ETHERSCAN_API_KEY,
+      rise: "abc",
     },
   },
   networks: {
@@ -31,6 +37,11 @@ const config: HardhatUserConfig = {
       accounts,
       chainId: 11155111,
       url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
+    },
+    rise: {
+      url: "https://testnet.riselabs.xyz",
+      accounts,
+      chainId: 11155931,
     },
   },
   defaultNetwork: "sepolia",

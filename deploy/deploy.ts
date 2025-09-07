@@ -1,9 +1,8 @@
-import { ZeroAddress } from "ethers";
 import { DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { sleep } from "../utils";
 
-const AI_SIGNER = ZeroAddress; // replace with actual AI signer address
+const AI_SIGNER = "0x9C4AdC3251C264e39A3559e761697D232Deb1dB0"; // replace with actual AI signer address
 const CHALLENGE_SECONDS = 60; // 1 minute for testing, increase for production
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
